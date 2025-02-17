@@ -10,13 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from decouple import config
+from storages.backends.s3boto3 import S3Boto3Storage
+import boto3
+from dotenv import load_dotenv
 from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-from dotenv import load_dotenv
 load_dotenv()
 
 
@@ -27,7 +30,7 @@ load_dotenv()
 SECRET_KEY = 'django-insecure-jp!64f%x_fg&_v@gi(sc!2=-_7hgar%k$1xjq6tr4urm9h7my$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -40,18 +43,49 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-     'cloudinary_storage',
     'django.contrib.staticfiles',
-    'cloudinary',
+
 
     'corsheaders',
     'core',
     'rest_framework',
+    'storages'
 ]
+
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+
+AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+
+
+# # Static files (CSS, JavaScript, Images)
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+
+# # Media files
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+    },
+    
+}
+
+AWS_S3_FILE_OVERWRITE = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-     'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -104,15 +138,7 @@ DATABASES = {
     }
 }
 
-
-# MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-MEDIA_URL = '/media/'
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
-CLOUDINARY_URL = f'cloudinary://{os.getenv("CLOUDINARY_API_KEY")}:{os.getenv("CLOUDINARY_API_SECRET")}@{os.getenv("CLOUDINARY_CLOUD_NAME")}'
-# # print(CLOUDINARY_URL,'CLOUDINARY_URL')
-
+STATIC_URL = 'static/'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -147,8 +173,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

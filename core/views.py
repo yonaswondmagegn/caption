@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import YouTubeCaption
 from .serializer import YoutubeCaptionSerializer
+import requests
 
 
 class CreateCaptionView(APIView):
@@ -12,11 +13,13 @@ class CreateCaptionView(APIView):
         video_id = request.data.get('url')
         if not video_id:
             return Response({'error': "url not found"}, status=status.HTTP_400_BAD_REQUEST)
-        
+   
+            
         available_caption = YouTubeCaption.objects.filter(url = video_id).first()
         if available_caption:
             serialized_data = YoutubeCaptionSerializer(available_caption)
             return Response(data= serialized_data.data,status= status.HTTP_200_OK)
+
 
         def get_youtube_captions(video_id, languages=['en']):
 
