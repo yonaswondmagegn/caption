@@ -30,7 +30,7 @@ load_dotenv()
 SECRET_KEY = 'django-insecure-jp!64f%x_fg&_v@gi(sc!2=-_7hgar%k$1xjq6tr4urm9h7my$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -82,6 +82,9 @@ STORAGES = {
 }
 
 AWS_S3_FILE_OVERWRITE = False
+# STATIC_ROOT = os.path.join(BASE_DIR,'static')
+# MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+# MEDIA_URL = '/media/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

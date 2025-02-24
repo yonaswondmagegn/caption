@@ -5,83 +5,97 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import YouTubeCaption
 from .serializer import YoutubeCaptionSerializer
+from rest_framework.viewsets import ModelViewSet
+from .pagination import YoutubePagination
 import requests
-
+import json
+import yt_dlp
+import boto3
 
 class CreateCaptionView(APIView):
     def post(self, request):
         video_id = request.data.get('url')
         if not video_id:
             return Response({'error': "url not found"}, status=status.HTTP_400_BAD_REQUEST)
-   
-            
-        available_caption = YouTubeCaption.objects.filter(url = video_id).first()
+
+        available_caption = YouTubeCaption.objects.filter(url=video_id).first()
         if available_caption:
             serialized_data = YoutubeCaptionSerializer(available_caption)
-            return Response(data= serialized_data.data,status= status.HTTP_200_OK)
-
-
-        def get_youtube_captions(video_id, languages=['en']):
-
-            try:
-                transcript = YouTubeTranscriptApi.get_transcript(
-                    video_id, languages=languages)
-                return transcript
-            except TranscriptsDisabled:
-                return []
-            except Exception as e:  # Catch other potential errors
-                return None
-
-        def format_time(seconds):
-            milliseconds = int((seconds * 1000) % 1000)
-            seconds = int(seconds)
-            minutes = seconds // 60
-            seconds %= 60
-            hours = minutes // 60
-            minutes %= 60
-            return f"{hours:02d}:{minutes:02d}:{seconds:02d},{milliseconds:03d}"
-
-        captions = get_youtube_captions(video_id)
-
-        if captions is None:
-            return Response({"error": "1 Can't found caption"}, status=status.HTTP_400_BAD_REQUEST)
-
-        if not captions:
-            print(video_id,'video id of 2')
-            return Response({"error": " 2 Can't found caption"}, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response(data=serialized_data.data, status=status.HTTP_200_OK)
         try:
-            srt_content = ""
-            for i, caption in enumerate(captions):
-                start_time = caption['start']
-                duration = caption['duration']
-                end_time = start_time + duration
+            S3_BUCKET_NAME = "yonas-cap"
+            S3_FILE_KEY = "coc.txt"  # Path in S3
 
-                # Format timestamps for SRT (HH:MM:SS,milliseconds)
-                start_time_str = format_time(start_time)
-                end_time_str = format_time(end_time)
+            # Download `coc.txt` from S3
+            def download_cookie_file():
+                s3 = boto3.client("s3")
+                local_path = "/tmp/coc.txt"  # Lambda can write only to /tmp
 
-                srt_content += f"{i + 1}\n"  # Caption number
-                srt_content += f"{start_time_str} --> {end_time_str}\n"
-                # Caption text and two newlines
-                srt_content += f"{caption['text']}\n\n"
+                try:
+                    s3.download_file(S3_BUCKET_NAME, S3_FILE_KEY, local_path)
+                    return local_path
+                except Exception as e:
+                    return None
+            coc_path = download_cookie_file()
+            if not coc_path:
+                raise ValueError("can't find cookie")
+            options = {
+                "cookiefile": coc_path, 
+                "writesubtitles": True,  
+                "writeautomaticsub": True,  
+                "skip_download": True,     
+                "quiet": True
+            }
 
-            # Save the .srt file to the database
-            srt_file_name = f"{video_id}.srt"
-            srt_file = ContentFile(
-                srt_content.encode('utf-8'), name=srt_file_name)
+            with yt_dlp.YoutubeDL(options) as ydl:
+                info = ydl.extract_info(video_id, download=False)
+                subtitles = info.get("subtitles") or {}
+                subtitle_url = ""
+                print(subtitles)
+                writen_url = next(
+                            (link['url'] for lang in subtitles 
+                            for link in subtitles[lang] 
+                            if link.get('name') == 'English - Default' and link.get('ext') == 'json3'),
+                            None
+                        )
 
-            # Create a new YouTubeCaption instance
-            youtube_caption = YouTubeCaption(url=video_id)
-            youtube_caption.caption.save(srt_file_name, srt_file, save=True)
+                # next((links.url for links in  subtitles[next(iter(subtitles))] if links['name'] == 'English - Default' and links['ext'] =='json3'),None)
+                if not writen_url:
+                    auto_captions = info.get("automatic_captions") or {}
 
-            return Response(
-                {
-                    "success": "Captions saved to database",
-                    "caption": youtube_caption.caption.url
-                },
-                status=status.HTTP_201_CREATED
-            )
+                if writen_url:
+                    subtitle_url = writen_url
+                elif "en" in auto_captions:
+                    subtitle_url = auto_captions["en"][0]["url"]
+                    print(subtitle_url)
+                
 
-        except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+                if not subtitle_url:
+                    return Response({'error':'subtitle not found '},status = status.HTTP_400_BAD_REQUEST)
+                
+                response = requests.get(subtitle_url)
+                
+                if response.status_code == 200:
+                    subtitle_data = response.json()
+                    json_data = json.dumps(subtitle_data, indent=4, ensure_ascii=False)
+
+                    caption_instance = YouTubeCaption(
+                        url=video_id,
+                        type='W' if writen_url else 'A'
+                    )
+                    caption_instance.caption.save(f"{video_id}.json", ContentFile(json_data))
+                    caption_instance.save()
+
+                    serialized_data = YoutubeCaptionSerializer(caption_instance)
+                    return Response(data=serialized_data.data, status=status.HTTP_201_CREATED)
+                else:
+                    raise ValueError('subtitle not found')
+        except Exception as e :
+            print(str(e))
+            return Response({'url':f'subtitle not Found {str(e)}'},status=status.HTTP_400_BAD_REQUEST)
+        
+    
+class YouTubeVideosViewSet(ModelViewSet):
+    queryset = YouTubeCaption.objects.all()
+    serializer_class = YoutubeCaptionSerializer
+    pagination_class = YoutubePagination

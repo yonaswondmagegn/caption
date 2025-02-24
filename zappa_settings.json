@@ -1,5 +1,6 @@
 {
     "dev": {
+        "aws_region": "eu-north-1",
         "django_settings": "caption.settings",
         "exclude": [
             "boto3",
@@ -11,8 +12,6 @@
         "profile_name": "default",
         "project_name": "caption",
         "runtime": "python3.12",
-        "aws_region": "eu-north-1",
-        "s3_bucket": "caption.bucket",
-        "timeout_seconds": 30
+        "s3_bucket": "yonas-cap"
     }
 }
