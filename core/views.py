@@ -77,8 +77,9 @@ class CreateCaptionView(APIView):
                     caption_instance.save()
 
                     try:
-                        with open('/tmp/coc.txt','rb') as file:
-                            s3.upload_file(file, 'yonas-cap', 'coc.txt')
+                        with open('/tmp/coc.txt','rb') as f:
+                            s3.put_object(Bucket='yonas-cap', Key='coc.txt', Body=f)
+
                         print('uploaded sucessfully')
                     except:
                         print("can't upload coc.txt ")
