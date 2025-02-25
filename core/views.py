@@ -58,7 +58,6 @@ class CreateCaptionView(APIView):
                     subtitle_url = writen_url
                 elif "en" in auto_captions:
                     subtitle_url = auto_captions["en"][0]["url"]
-                    print(subtitle_url)
 
                 if not subtitle_url:
                     return Response({'error': 'subtitle not found '}, status=status.HTTP_400_BAD_REQUEST)
@@ -69,7 +68,6 @@ class CreateCaptionView(APIView):
                     subtitle_data = response.json()
                     json_data = json.dumps(
                         subtitle_data, indent=4, ensure_ascii=False)
-                    print(subtitle_data,'subtitle data')
 
                     caption_instance = YouTubeCaption(
                         url=video_id,
