@@ -78,6 +78,11 @@ class CreateCaptionView(APIView):
                     caption_instance.caption.save(f"{video_id}.json", ContentFile(json_data))
                     caption_instance.save()
 
+                    try:
+                        s3.upload_file('/tmp/coc.txt', 'yonas-cap', 'coc.txt')
+                    except:
+                        print("can't upload coc.txt ")
+                    
                     serialized_data = YoutubeCaptionSerializer(
                         caption_instance)
                     return Response(data=serialized_data.data, status=status.HTTP_201_CREATED)
