@@ -92,6 +92,7 @@ class CreateCaptionView(APIView):
                 try:
                     with open('/tmp/coc.txt','rb') as f:
                         print("Updated coc.txt content before upload:\n", f.read())
+                        f.seek(0)
                         s3.put_object(Bucket='yonas-cap', Key='coc.txt', Body=f)
                     print('uploaded sucessfully')
                 except:
