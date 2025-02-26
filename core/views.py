@@ -44,9 +44,12 @@ class CreateCaptionView(APIView):
                 subtitles = info.get("subtitles") or {}
                 subtitle_url = ""
                 writen_url = ""
-                if 'en' in subtitles:
-                    writen_url = subtitles["en"][0]["url"]
+                print(subtitles)
+                if 'en-ehkg1hFWq8A' in subtitles:
+                    writen_url = subtitles["en-ehkg1hFWq8A"][0]["url"]
                     subtitle_url = writen_url
+                elif 'en' in subtitles:
+                    writen_url = subtitles["en"][0]["url"]
                 else:
                     auto_captions = info.get("automatic_captions") or {}
                     if "en" in auto_captions:
@@ -54,7 +57,7 @@ class CreateCaptionView(APIView):
 
                 if not subtitle_url:
                     return Response({'error': 'subtitle not found '}, status=status.HTTP_400_BAD_REQUEST)
-
+                Response({'url':subtitle_url})
                 response = requests.get(subtitle_url)
 
                 if response.status_code == 200:
@@ -80,6 +83,7 @@ class CreateCaptionView(APIView):
             error_happened = True
             return Response({'url': f'subtitle not Found {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
         finally:
+            # print('finally')
             if not error_happened:
                 try:
                     with open('/tmp/coc.txt','rb') as f:
