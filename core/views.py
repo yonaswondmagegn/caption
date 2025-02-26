@@ -43,22 +43,13 @@ class CreateCaptionView(APIView):
                 info = ydl.extract_info(video_id, download=False)
                 subtitles = info.get("subtitles") or {}
                 subtitle_url = ""
-                print(subtitles)
-                writen_url = next(
-                    (link['url'] for lang in subtitles
-                     for link in subtitles[lang]
-                     if link.get('name') == 'English - Default' and link.get('ext') == 'json3'),
-                    None
-                )
-
-                # next((links.url for links in  subtitles[next(iter(subtitles))] if links['name'] == 'English - Default' and links['ext'] =='json3'),None)
-                if not writen_url:
-                    auto_captions = info.get("automatic_captions") or {}
-
-                if writen_url:
+                if 'en' in subtitles:
+                    writen_url = subtitles["en"][0]["url"]
                     subtitle_url = writen_url
-                elif "en" in auto_captions:
-                    subtitle_url = auto_captions["en"][0]["url"]
+                else:
+                    auto_captions = info.get("automatic_captions") or {}
+                    if "en" in auto_captions:
+                        subtitle_url = auto_captions["en"][0]["url"]
 
                 if not subtitle_url:
                     return Response({'error': 'subtitle not found '}, status=status.HTTP_400_BAD_REQUEST)
