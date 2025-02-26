@@ -13,6 +13,7 @@ import yt_dlp
 import boto3
 import os
 import tempfile
+import re
 
 
 class CreateCaptionView(APIView):
@@ -44,12 +45,16 @@ class CreateCaptionView(APIView):
                 subtitles = info.get("subtitles") or {}
                 subtitle_url = ""
                 writen_url = ""
-                print(subtitles)
-                if 'en-ehkg1hFWq8A' in subtitles:
-                    writen_url = subtitles["en-ehkg1hFWq8A"][0]["url"]
-                    subtitle_url = writen_url
-                elif 'en' in subtitles:
+                key_lists = list(subtitles.keys())
+                pattern = r"en-[\w-]+"
+
+                matches = [word for word in key_lists if re.match(pattern, word)]
+
+                if 'en' in subtitles:
                     writen_url = subtitles["en"][0]["url"]
+                elif matches[0]:
+                    writen_url = subtitles[matches[0]][0]["url"]
+                    subtitle_url = writen_url
                 else:
                     auto_captions = info.get("automatic_captions") or {}
                     if "en" in auto_captions:
@@ -83,7 +88,7 @@ class CreateCaptionView(APIView):
             error_happened = True
             return Response({'url': f'subtitle not Found {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
         finally:
-            # print('finally')
+            print('finally')
             if not error_happened:
                 try:
                     with open('/tmp/coc.txt','rb') as f:
