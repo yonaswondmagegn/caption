@@ -43,6 +43,7 @@ class CreateCaptionView(APIView):
                 info = ydl.extract_info(video_id, download=False)
                 subtitles = info.get("subtitles") or {}
                 subtitle_url = ""
+                writen_url = ""
                 if 'en' in subtitles:
                     writen_url = subtitles["en"][0]["url"]
                     subtitle_url = writen_url
