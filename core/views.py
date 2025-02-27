@@ -52,7 +52,7 @@ class CreateCaptionView(APIView):
 
                 if 'en' in subtitles:
                     writen_url = subtitles["en"][0]["url"]
-                elif matches[0]:
+                elif len(matches) != 0:
                     writen_url = subtitles[matches[0]][0]["url"]
                     subtitle_url = writen_url
                 else:
@@ -62,33 +62,36 @@ class CreateCaptionView(APIView):
 
                 if not subtitle_url:
                     return Response({'error': 'subtitle not found '}, status=status.HTTP_400_BAD_REQUEST)
-                Response({'url':subtitle_url})
-                response = requests.get(subtitle_url)
+                try:
+                    response = requests.get(subtitle_url)
+                    if response.status_code == 200:
+                        subtitle_data = response.json()
+                        json_data = json.dumps(
+                            subtitle_data, indent=4, ensure_ascii=False)
 
-                if response.status_code == 200:
-                    subtitle_data = response.json()
-                    json_data = json.dumps(
-                        subtitle_data, indent=4, ensure_ascii=False)
-
-                    caption_instance = YouTubeCaption(
-                        url=video_id,
-                        type='W' if writen_url else 'A'
-                    )
-                    caption_instance.caption.save(f"{video_id}.json", ContentFile(json_data))
-                    caption_instance.save()
-                    
-                    serialized_data = YoutubeCaptionSerializer(
-                        caption_instance)
-                    return Response(data=serialized_data.data, status=status.HTTP_201_CREATED)
-                else:
-                    raise ValueError('subtitle not found')
+                        caption_instance = YouTubeCaption(
+                            url=video_id,
+                            type='W' if writen_url else 'A'
+                        )
+                        caption_instance.caption.save(f"{video_id}.json", ContentFile(json_data))
+                        caption_instance.save()
+                        
+                        serialized_data = YoutubeCaptionSerializer(
+                            caption_instance)
+                        return Response(data=serialized_data.data, status=status.HTTP_201_CREATED)
+                    else:
+                        raise ValueError('subtitle not found')
+                except:
+                    return Response({
+                        "url":video_id,
+                        "caption":subtitle_url,
+                        "type":writen_url
+                    },status = status.HTTP_200_OK )
            
         except Exception as e:
-            print(str(e))
             error_happened = True
             return Response({'url': f'subtitle not Found {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
         finally:
-            print('finally')
             if not error_happened:
                 try:
                     with open('/tmp/coc.txt','rb') as f:
