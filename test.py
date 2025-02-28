@@ -5,7 +5,7 @@ import json
 video_url = "https://www.youtube.com/watch?v=vdzyESNzlQg"
 
 # Options for yt-dlp
-
+proxy = f"http://sp4fyid8qe:ll9f7bOeAd8to_7XbV@gate.smartproxy.com:7000"
 
 options = {
     'proxy': proxy,

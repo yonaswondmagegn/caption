@@ -27,7 +27,7 @@ class CreateCaptionView(APIView):
             serialized_data = YoutubeCaptionSerializer(available_caption)
             return Response(data=serialized_data.data, status=status.HTTP_200_OK)
         try:
-            proxy = f"http://sp4fyid8qe:ll9f7bOeAd8to_7XbV@gate.smartproxy.com:10001"
+            proxy = f"http://sp4fyid8qe:ll9f7bOeAd8to_7XbV@gate.smartproxy.com:7000"
 
             options = {
                 'proxy': proxy,
