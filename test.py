@@ -5,11 +5,13 @@ import json
 video_url = "https://www.youtube.com/watch?v=vdzyESNzlQg"
 
 # Options for yt-dlp
+
+
 options = {
-    "cookiefile": "coc.txt",  # Use the cookies file for authentication
-    "writesubtitles": True,  # Get subtitles
-    "writeautomaticsub": True,  # Get auto-generated subtitles
-    "skip_download": True,      # Don't download video
+    'proxy': proxy,
+    "writesubtitles": True, 
+    "writeautomaticsub": True, 
+    "skip_download": True,    
     "quiet": True
 }
 
@@ -38,6 +40,5 @@ with yt_dlp.YoutubeDL(options) as ydl:
     else:
         print("No auto-generated subtitles found!")
 
-response = requests.get("https://www.youtube.com/api/timedtext?v=")
 
 

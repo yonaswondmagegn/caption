@@ -26,14 +26,11 @@ class CreateCaptionView(APIView):
         if available_caption:
             serialized_data = YoutubeCaptionSerializer(available_caption)
             return Response(data=serialized_data.data, status=status.HTTP_200_OK)
-        error_happened = False
         try:
-            s3 = boto3.client('s3')
-            bucket_name = 'yonas-cap'
-            s3.download_file(bucket_name, 'coc.txt', '/tmp/coc.txt')
+            proxy = f"http://sp4fyid8qe:ll9f7bOeAd8to_7XbV@gate.smartproxy.com:10001"
 
             options = {
-                "cookiefile": "/tmp/coc.txt",
+                'proxy': proxy,
                 "writesubtitles": True,
                 "writeautomaticsub": True,
                 "skip_download": True,
@@ -89,18 +86,7 @@ class CreateCaptionView(APIView):
                     },status = status.HTTP_200_OK )
            
         except Exception as e:
-            error_happened = True
             return Response({'url': f'subtitle not Found {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
-        finally:
-            if not error_happened:
-                try:
-                    with open('/tmp/coc.txt','rb') as f:
-                        print("Updated coc.txt content before upload:\n", f.read())
-                        f.seek(0)
-                        s3.put_object(Bucket='yonas-cap', Key='coc.txt', Body=f)
-                    print('uploaded sucessfully')
-                except:
-                    print("can't upload coc.txt ")
                    
 
 
