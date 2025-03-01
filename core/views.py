@@ -65,6 +65,7 @@ class CreateCaptionView(APIView):
                     response = requests.get(subtitle_url)
                     if response.status_code == 200:
                         subtitle_data = response.json()
+                        
                         json_data = json.dumps(
                             subtitle_data, indent=4, ensure_ascii=False)
 

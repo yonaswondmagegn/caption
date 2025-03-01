@@ -1,0 +1,293 @@
+{
+    "wireMagic": "pb3",
+    "pens": [
+        {}
+    ],
+    "wsWinStyles": [
+        {}
+    ],
+    "wpWinPositions": [
+        {}
+    ],
+    "events": [
+        {
+            "tStartMs": 19500,
+            "dDurationMs": 5200,
+            "segs": [
+                {
+                    "utf8": "I used to bite my tongue and hold my breath\nScared to rock the boat and make a mess"
+                }
+            ]
+        },
+        {
+            "tStartMs": 24700,
+            "dDurationMs": 5300,
+            "segs": [
+                {
+                    "utf8": "So I sat quietly, agreed politely"
+                }
+            ]
+        },
+        {
+            "tStartMs": 30000,
+            "dDurationMs": 5400,
+            "segs": [
+                {
+                    "utf8": "I guess that I forgot I had a choice\nI let you push me past the breaking point"
+                }
+            ]
+        },
+        {
+            "tStartMs": 35400,
+            "dDurationMs": 4900,
+            "segs": [
+                {
+                    "utf8": "I stood for nothing, so I fell for everything"
+                }
+            ]
+        },
+        {
+            "tStartMs": 47000,
+            "dDurationMs": 5000,
+            "segs": [
+                {
+                    "utf8": "You held me down, but I got up\nAlready brushing off the dust"
+                }
+            ]
+        },
+        {
+            "tStartMs": 52000,
+            "dDurationMs": 5800,
+            "segs": [
+                {
+                    "utf8": "You hear my voice, you hear that sound\nLike thunder, gonna shake your ground"
+                }
+            ]
+        },
+        {
+            "tStartMs": 57800,
+            "dDurationMs": 5200,
+            "segs": [
+                {
+                    "utf8": "You held me down, but I got up\nGet ready cause I've had enough"
+                }
+            ]
+        },
+        {
+            "tStartMs": 63000,
+            "dDurationMs": 3000,
+            "segs": [
+                {
+                    "utf8": "I see it all, I see it now"
+                }
+            ]
+        },
+        {
+            "tStartMs": 66000,
+            "dDurationMs": 4500,
+            "segs": [
+                {
+                    "utf8": "I got the eye of the tiger, a fighter,"
+                }
+            ]
+        },
+        {
+            "tStartMs": 70500,
+            "dDurationMs": 5500,
+            "segs": [
+                {
+                    "utf8": "dancing through the fire\n'Cause I am a champion"
+                }
+            ]
+        },
+        {
+            "tStartMs": 76000,
+            "dDurationMs": 8000,
+            "segs": [
+                {
+                    "utf8": "and you're gonna hear me roar\nLouder, louder than a lion"
+                }
+            ]
+        },
+        {
+            "tStartMs": 84000,
+            "dDurationMs": 3000,
+            "segs": [
+                {
+                    "utf8": "Cause I am a champion"
+                }
+            ]
+        },
+        {
+            "tStartMs": 87000,
+            "dDurationMs": 15000,
+            "segs": [
+                {
+                    "utf8": "and you're gonna hear me roar\nOh oh oh oh oh oh\nYou're gonna hear me roar"
+                }
+            ]
+        },
+        {
+            "tStartMs": 103300,
+            "dDurationMs": 5400,
+            "segs": [
+                {
+                    "utf8": "Now I'm floating like a butterfly\nStinging like a bee I earned my stripes"
+                }
+            ]
+        },
+        {
+            "tStartMs": 108700,
+            "dDurationMs": 5100,
+            "segs": [
+                {
+                    "utf8": "I went from zero, to my own hero"
+                }
+            ]
+        },
+        {
+            "tStartMs": 113800,
+            "dDurationMs": 5200,
+            "segs": [
+                {
+                    "utf8": "You held me down, but I got up\nAlready brushing off the dust"
+                }
+            ]
+        },
+        {
+            "tStartMs": 119000,
+            "dDurationMs": 5000,
+            "segs": [
+                {
+                    "utf8": "You hear my voice, your hear that sound\nLike thunder, gonna shake your ground"
+                }
+            ]
+        },
+        {
+            "tStartMs": 124000,
+            "dDurationMs": 5500,
+            "segs": [
+                {
+                    "utf8": "You held me down, but I got up\nGet ready 'cause I've had enough"
+                }
+            ]
+        },
+        {
+            "tStartMs": 129500,
+            "dDurationMs": 3000,
+            "segs": [
+                {
+                    "utf8": "I see it all, I see it now"
+                }
+            ]
+        },
+        {
+            "tStartMs": 132500,
+            "dDurationMs": 4500,
+            "segs": [
+                {
+                    "utf8": "I got the eye of the tiger, a fighter,"
+                }
+            ]
+        },
+        {
+            "tStartMs": 137000,
+            "dDurationMs": 5500,
+            "segs": [
+                {
+                    "utf8": "dancing through the fire\n'cause I am a champion"
+                }
+            ]
+        },
+        {
+            "tStartMs": 142500,
+            "dDurationMs": 8000,
+            "segs": [
+                {
+                    "utf8": "and you're gonna hear me roar\nLouder, louder than a lion"
+                }
+            ]
+        },
+        {
+            "tStartMs": 150500,
+            "dDurationMs": 3000,
+            "segs": [
+                {
+                    "utf8": "'cause I am a champion"
+                }
+            ]
+        },
+        {
+            "tStartMs": 153500,
+            "dDurationMs": 21500,
+            "segs": [
+                {
+                    "utf8": "and you're gonna hear me roar\nOh oh oh oh oh oh\nYou're gonna hear me roar\nOh oh oh oh oh oh"
+                }
+            ]
+        },
+        {
+            "tStartMs": 175000,
+            "dDurationMs": 3500,
+            "segs": [
+                {
+                    "utf8": "You're gonna hear me roar"
+                }
+            ]
+        },
+        {
+            "tStartMs": 194000,
+            "dDurationMs": 4500,
+            "segs": [
+                {
+                    "utf8": "I got the eye of the tiger, a fighter,"
+                }
+            ]
+        },
+        {
+            "tStartMs": 198500,
+            "dDurationMs": 5500,
+            "segs": [
+                {
+                    "utf8": "dancing through the fire\n'Cause I am a champion"
+                }
+            ]
+        },
+        {
+            "tStartMs": 204000,
+            "dDurationMs": 8000,
+            "segs": [
+                {
+                    "utf8": "and you're gonna hear me roar\nLouder, louder than a lion"
+                }
+            ]
+        },
+        {
+            "tStartMs": 212000,
+            "dDurationMs": 3000,
+            "segs": [
+                {
+                    "utf8": "'Cause I am a champion"
+                }
+            ]
+        },
+        {
+            "tStartMs": 215000,
+            "dDurationMs": 21000,
+            "segs": [
+                {
+                    "utf8": "and you're gonna hear me roar\nOh oh oh oh oh oh\nYou're gonna hear me roar\nOh oh oh oh oh oh"
+                }
+            ]
+        },
+        {
+            "tStartMs": 236000,
+            "dDurationMs": 5000,
+            "segs": [
+                {
+                    "utf8": "You're gonna hear me roar"
+                }
+            ]
+        }
+    ]
+}
