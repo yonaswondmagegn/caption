@@ -46,7 +46,7 @@ class CreateCaptionView(APIView):
                 pattern = r"en-[\w-]+"
 
                 matches = [word for word in key_lists if re.match(pattern, word)]
-
+                print(subtitles)
                 if 'en' in subtitles:
                     writen_url = subtitles["en"][0]["url"]
                 elif len(matches) != 0:
@@ -56,6 +56,8 @@ class CreateCaptionView(APIView):
                     auto_captions = info.get("automatic_captions") or {}
                     if "en" in auto_captions:
                         subtitle_url = auto_captions["en"][0]["url"]
+                
+                print(subtitle_url,writen_url)
 
                 if not subtitle_url:
                     return Response({'error': 'subtitle not found '}, status=status.HTTP_400_BAD_REQUEST)

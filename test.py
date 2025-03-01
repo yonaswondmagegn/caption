@@ -1,17 +1,16 @@
 import yt_dlp
 import requests
 import json
+import re
 
-video_url = "https://www.youtube.com/watch?v=vdzyESNzlQg"
+video_url = "https://www.youtube.com/watch?v=S9bCLPwzSC0"
 
 # Options for yt-dlp
-proxy = f"http://sp4fyid8qe:ll9f7bOeAd8to_7XbV@gate.smartproxy.com:7000"
 
 options = {
-    'proxy': proxy,
-    "writesubtitles": True, 
-    "writeautomaticsub": True, 
-    "skip_download": True,    
+    "writesubtitles": True,
+    "writeautomaticsub": True,
+    "skip_download": True,
     "quiet": True
 }
 
@@ -22,23 +21,37 @@ with yt_dlp.YoutubeDL(options) as ydl:
     print(subtitles, 'original subtitles')
     auto_captions = info.get("automatic_captions") or {}
 
-    if "en" in auto_captions:
-        subtitle_url = auto_captions["en"][0]["url"]
-        response = requests.get(subtitle_url)
+    key_lists = list(subtitles.keys())
 
-        if response.status_code == 200:
-            subtitle_data = response.json()
+    pattern = r"en-[\w-]+"
+    matches = [word for word in key_lists if re.match(pattern, word)]
 
-            # Save as JSON
-            json_data = subtitle_data
-            with open("subtitles.json", "w", encoding="utf-8") as f:
-                json.dump(json_data, f, indent=4, ensure_ascii=False)
-
-            print("Subtitles saved as subtitles.json")
-        else:
-            print("Failed to download subtitles.")
+    if 'en' in subtitles:
+        writen_url = subtitles["en"][0]["url"]
+    elif len(matches) != 0:
+        writen_url = subtitles[matches[0]][0]["url"]
+        subtitle_url = writen_url
     else:
-        print("No auto-generated subtitles found!")
+        auto_captions = info.get("automatic_captions") or {}
+        if "en" in auto_captions:
+            subtitle_url = auto_captions["en"][0]["url"]
+    
+    print(subtitle_url)
 
+    # if "en" in auto_captions:
+    #     subtitle_url = auto_captions["en"][0]["url"]
+    #     response = requests.get(subtitle_url)
 
+    #     if response.status_code == 200:
+    #         subtitle_data = response.json()
 
+    #         # Save as JSON
+    #         json_data = subtitle_data
+    #         with open("subtitles.json", "w", encoding="utf-8") as f:
+    #             json.dump(json_data, f, indent=4, ensure_ascii=False)
+
+    #         print("Subtitles saved as subtitles.json")
+    #     else:
+    #         print("Failed to download subtitles.")
+    # else:
+    #     print("No auto-generated subtitles found!")
