@@ -42,6 +42,7 @@ class CreateCaptionView(APIView):
                 subtitles = info.get("subtitles") or {}
                 subtitle_url = ""
                 writen_url = ""
+
                 key_lists = list(subtitles.keys())
                 pattern = r"en-[\w-]+"
 
@@ -60,7 +61,7 @@ class CreateCaptionView(APIView):
                 print(subtitle_url,writen_url)
 
                 if not subtitle_url:
-                    return Response({'error': 'subtitle not found '}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'error': 'subtitle not found 1'}, status=status.HTTP_400_BAD_REQUEST)
                 try:
                     response = requests.get(subtitle_url)
                     if response.status_code == 200:
@@ -79,8 +80,6 @@ class CreateCaptionView(APIView):
                         serialized_data = YoutubeCaptionSerializer(
                             caption_instance)
                         return Response(data=serialized_data.data, status=status.HTTP_201_CREATED)
-                    else:
-                        raise ValueError('subtitle not found')
                 except:
                     return Response({
                         "url":video_id,
