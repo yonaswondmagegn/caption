@@ -45,10 +45,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 
     'corsheaders',
     'core',
+    "coreauth",
     'rest_framework',
+    'djoser',
     'storages'
 ]
 
@@ -86,6 +92,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'caption.urls'
@@ -120,6 +128,32 @@ CORS_ORIGIN_ALLOW_ALL = True
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+}
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        'APP': {
+            'client_id': '746358510825-lhas47hhphoitqmf5khoqidhartnrr25.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        }
+    }
+}
 
 DATABASES = {
     'default': {
