@@ -148,8 +148,8 @@ SOCIALACCOUNT_PROVIDERS = {
         'SCOPE': ['profile', 'email'],
         'AUTH_PARAMS': {'access_type': 'online'},
         'APP': {
-            'client_id': '746358510825-lhas47hhphoitqmf5khoqidhartnrr25.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': os.getenv('client_id'),
+            'secret': os.getenv('secret'),
             'key': ''
         }
     }
