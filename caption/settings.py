@@ -143,6 +143,8 @@ SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
 }
 
+#  gogole provideer
+
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': ['profile', 'email'],
