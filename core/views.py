@@ -35,8 +35,7 @@ class CreateCaptionView(APIView):
                 'proxy': proxy,
                 "writesubtitles": True,
                 "writeautomaticsub": True,
-                "skip_download": True,
-           
+                "skip_download": True
             }
 
             with yt_dlp.YoutubeDL(options) as ydl:
